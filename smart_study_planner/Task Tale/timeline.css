@@ -1,0 +1,292 @@
+/* ============================================
+   SCHEDULE SIDEBAR - Outer container (legacy)
+   ============================================ */
+.schedule-sidebar {
+    width: 280px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 40px 40px 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+}
+
+body.dark-mode .schedule-sidebar {
+    background: #1a1a1a;
+    border-color: #333;
+}
+
+.schedule-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #667eea;
+}
+
+.schedule-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+body.dark-mode .schedule-header h3 {
+    color: #e0e0e0;
+}
+
+#schedule-date {
+    font-size: 13px;
+    color: #999;
+    font-weight: 500;
+}
+
+body.dark-mode #schedule-date {
+    color: #666;
+}
+
+/* ============================================
+   SCHEDULE ITEMS - Task list entries
+   ============================================ */
+.schedule-item {
+    background: #f0f0f0;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .schedule-item {
+    background: #2a2a2a;
+    border-left-color: #667eea;
+}
+
+.schedule-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+body.dark-mode .schedule-item:hover {
+    background: #333;
+}
+
+.schedule-time {
+    font-size: 12px;
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.schedule-task {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+body.dark-mode .schedule-task {
+    color: #e0e0e0;
+}
+
+.schedule-empty {
+    color: #999;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+body.dark-mode .schedule-empty {
+    color: #666;
+}
+
+/* ============================================
+   MODERN TIMELINE - Main daily schedule panel
+   ============================================ */
+.modern-schedule {
+    width: 340px;
+    background: #f5f5f5;
+    border-left: 1px solid #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+body.dark-mode .modern-schedule {
+    background: #101010;
+    border-color: #222;
+}
+
+/* Header */
+.schedule-header-modern {
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    background: white;
+}
+
+body.dark-mode .schedule-header-modern {
+    background: #151515;
+    border-color: #222;
+}
+
+.schedule-header-modern h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.schedule-header-modern p {
+    font-size: 13px;
+    color: #888;
+}
+
+/* ============================================
+   TIMELINE WRAPPER - Scrollable time area
+   ============================================ */
+.timeline-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    padding-bottom: 100px;
+    scroll-behavior: smooth;
+}
+
+/* Hour labels column */
+.timeline-hours {
+    width: 70px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.hour-label {
+    position: absolute;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+}
+
+/* Event area */
+.timeline-content {
+    flex: 1;
+    position: relative;
+    min-height: 1600px;
+    margin-left: 10px;
+}
+
+/* Vertical line */
+.timeline-line {
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #d0d0d0;
+}
+
+body.dark-mode .timeline-line {
+    background: #333;
+}
+
+/* ============================================
+   TIMELINE DOTS - Circle markers on the line
+   ============================================ */
+.timeline-dot {
+    position: absolute;
+    left: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #999;
+    z-index: 2;
+}
+
+body.dark-mode .timeline-dot {
+    background: #111;
+}
+
+/* ============================================
+   TIMELINE EVENT CARDS
+   ============================================ */
+.timeline-event {
+    position: absolute;
+    left: 35px;
+    right: 16px;
+    background: white;
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+body.dark-mode .timeline-event {
+    background: #1c1c1c;
+    box-shadow: none;
+}
+
+.timeline-event:hover {
+    transform: translateY(-2px);
+}
+
+.timeline-event-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+body.dark-mode .timeline-event-title {
+    color: #f0f0f0;
+}
+
+.timeline-event-detail {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+/* Difficulty/tip box */
+.timeline-tip {
+    margin-top: 10px;
+    background: #f3f3f3;
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 11px;
+    color: #666;
+}
+
+body.dark-mode .timeline-tip {
+    background: #262626;
+    color: #aaa;
+}
+
+/* ============================================
+   FLOATING ADD BUTTON
+   ============================================ */
+.floating-add-btn {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 65px;
+    height: 65px;
+    border: none;
+    border-radius: 50%;
+    background: #667eea;
+    color: white;
+    font-size: 34px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.floating-add-btn:hover {
+    transform: scale(1.08);
+    background: #764ba2;
+}
+
+body.dark-mode .floating-add-btn {
+    background: #222;
+    color: white;
+}

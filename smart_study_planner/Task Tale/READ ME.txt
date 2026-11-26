@@ -1,0 +1,3 @@
+This folder contains all the necessary files to run the TaskTale Website. NOTE it is very important you have all files saved in the same folder or else the website will not load properly. In case that there is any compatibility issue, the browser I was using is Edge. Although I believe there shouldn't be any issues!
+
+My Main work only concerns " modal.js / calendartest.js / calendartest.html "

@@ -1,0 +1,186 @@
+/* ============================================
+   RESET - Remove default browser margins/padding
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ============================================
+   BODY - Main page background, font, theme transitions
+   ============================================ */
+body {
+    font-family: 'Playfair Display', serif;
+    background: #eefff0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+/* ============================================
+   CONTAINER - Main flex layout (sidebar + content)
+   ============================================ */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* ============================================
+   PAGE BANNER - Header banner for each tab
+   ============================================ */
+.page-banner {
+    position: relative;
+    color: white;
+    padding: 30px 40px 50px 40px;
+    flex-shrink: 0;
+    margin-bottom: 0px;
+}
+
+.page-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('download2.jpg') center/cover;
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    z-index: 0;
+}
+
+.page-banner h1,
+.page-banner p {
+    position: relative;
+    z-index: 1;
+    top: 40px;
+}
+
+.page-banner h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.page-banner p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.tab-content hr {
+    border: none;
+    height: 1px;
+    background: #7e7e7e;
+    margin: 0 40px 20px 40px;
+}
+
+/* ============================================
+   CONTENT SECTION - Homepage content card
+   ============================================ */
+.calendar-container,
+.content-section {
+    margin: 0 40px 40px 40px;
+}
+
+.content-section {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+}
+
+body.dark-mode .content-section {
+    background: #1a1a1a;
+}
+
+.content-section h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+body.dark-mode .content-section h2 {
+    color: #e0e0e0;
+}
+
+.content-section p {
+    color: #999;
+}
+
+body.dark-mode .content-section p {
+    color: #666;
+}
+
+/* ============================================
+   TAB CONTENT - Visibility control
+   ============================================ */
+.tab-content {
+    display: none;
+    flex: 1;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================
+   MAIN CONTENT - Right side content area
+   ============================================ */
+.main-content {
+    flex: 1;
+    background: #e8ede2;
+    color: #333;
+    padding: 0;
+    overflow-y: auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+body.dark-mode .main-content {
+    background: #05120b;
+    color: #e0e0e0;
+}
+
+/* ============================================
+   RESPONSIVE - Mobile/tablet adjustments
+   ============================================ */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 20px;
+    }
+
+    .nav-menu,
+    .search-box {
+        display: none;
+    }
+
+    .sidebar-bottom {
+        flex-direction: row;
+        border-top: none;
+        padding-top: 0;
+    }
+
+    .tab-content {
+        padding: 20px;
+    }
+
+    .page-banner {
+        padding: 20px;
+    }
+
+    .page-banner h1 {
+        font-size: 22px;
+    }
+}
