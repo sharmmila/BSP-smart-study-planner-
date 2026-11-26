@@ -1,0 +1,1277 @@
+        /*
+        Since the style sheet became to large to have it on the HTML file, I moved it to a separate CSS file.
+        This file contains all the styles for the calendar page, including the sidebar,
+        main content, etc.
+
+        /*
+           RESET STYLES - Remove default browser margins/padding
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /*
+           BODY - Main page background, font, and theme transitions
+        */
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: #f5f5f5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /*
+           DARK MODE - Dark theme colors for body
+        */
+
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        /*
+           CONTAINER - Main flex layout (sidebar + main content)
+        */
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /*
+           SIDEBAR SECTION - Left navigation panel
+        */
+
+        .sidebar {
+            width: 280px;
+            background: #48614d;
+            color: #ffffff;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .sidebar.collapsed .nav-item {
+            justify-content: center;
+            padding: 14px 0;
+        }
+
+        .sidebar.collapsed .logo {
+            justify-content: center;
+            padding: 0 0 20px 0;
+        }
+
+        .sidebar.collapsed #sidebar-toggle-btn {
+            align-self: center;
+        }
+
+        /* Dark mode - Sidebar becomes even darker */
+        body.dark-mode .sidebar {
+            background: #23312a;
+        }
+
+
+        /*
+           LOGO SECTION - Brand logo and user info
+        */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        /* Dark mode - Logo border color */
+        body.dark-mode .logo {
+            border-bottom-color: #222;
+        }
+
+        /* Logo icon - Gradient colored box */
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        /* Logo text - Company name */
+        .logo-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Logo email - User email */
+        .logo-email {
+            font-size: 11px;
+            color: #999;
+        }
+
+        /*
+           SEARCH BOX - Search input container
+        */
+        .search-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        /* Search input - Styled text field */
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Search placeholder text - Light gray color */
+        .search-box input::placeholder {
+            color: #666;
+        }
+
+        /* Search focus state - Highlight with blue border */
+        .search-box input:focus {
+            border-color: #667eea;
+            background: #333;
+        }
+
+        /* Search icon - Magnifying glass position */
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+
+        /*
+           NAVIGATION MENU - Menu items container
+        */
+        .nav-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        /*
+           NAV ITEM - Individual menu link styling
+        */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        /* Hover state - Highlight menu item */
+        .nav-item:hover {
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+
+        /* Active state - Purple background for current page */
+        .nav-item.active {
+            background: #667eea;
+            color: #ffffff;
+        }
+
+        /* Nav icon - Icon display in menu */
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+
+        /*
+           SIDEBAR BOTTOM - Logout and theme toggle area
+        */
+        .sidebar-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        /* Dark mode - Sidebar bottom border */
+        body.dark-mode .sidebar-bottom {
+            border-top-color: #222;
+        }
+
+        /*
+           LOGOUT BUTTON - Logout button styling
+        */
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        /* Logout button hover */
+        .logout-btn:hover {
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+
+        /*
+           THEME TOGGLE - Light/Dark mode button
+        */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #05120b;
+            border: none;
+            color: #999;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        /*
+           TOGGLE SWITCH - Light/Dark mode switch container
+          */
+        .toggle-switch {
+            width: 48px;
+            height: 24px;
+            background: #444;
+            border-radius: 12px;
+            position: relative;
+            margin-left: auto;
+            cursor: pointer;
+        }
+
+        /* Toggle switch active state - Purple background */
+        .toggle-switch.active {
+            background: #667eea;
+        }
+
+        /*
+           TOGGLE CIRCLE - White circle inside switch
+         */
+        .toggle-circle {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Toggle circle active position - Slides to right */
+        .toggle-switch.active .toggle-circle {
+            left: 26px;
+        }
+
+        /*
+           MAIN CONTENT - Right side content area
+         */
+        .main-content {
+            flex: 1;
+            background: #d4dfc4;
+            color: #333;
+            padding: 0;
+            overflow-y: auto;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Dark mode - Main content background and text */
+        body.dark-mode .main-content {
+            background: #05120b;
+            color: #e0e0e0;
+        }
+
+
+        /*
+        PAGE BANNER - Header banner for each page/tab
+        */
+       .page-banner {
+        background: url('/static/planner/images/download2.jpg') center/cover;
+            color: white;
+            padding: 30px 40px;
+            flex-shrink: 0;
+            margin-bottom: 20px;
+        }
+        /* Page banner title */
+        .page-banner h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Page banner description */
+        .page-banner p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /*
+        CONTENT AFTER BANNER - Add padding/margin
+        */
+        .calendar-container,
+        .content-section {
+            margin: 0 40px 40px 40px;
+        }
+
+
+       /*
+        TAB CONTENT - Content visibility control
+       */
+        .tab-content {
+            display: none;
+            flex: 1;
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        /* Tab content active state - Show selected tab */
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+}
+
+
+        /*
+           CALENDAR HEADER - Month/year label and buttons
+         */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        /* Month label - Display current month and year */
+        #month-label {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Calendar buttons - Previous, Next, Today buttons */
+        .calendar-header button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Calendar buttons hover */
+        .calendar-header button:hover {
+            background-color: #764ba2;
+        }
+
+
+        /*
+           WEEKDAYS - Day of week labels (Sun, Mon, etc)
+        */
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /*
+           CALENDAR GRID - Days grid layout
+         */
+        #cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        /*
+           DAY CELL - Individual day cell styling
+         */
+        .day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        /* Day cell hover - Light gray background */
+        .day-cell:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Day cell other month - Grayed out previous/next month days */
+        .day-cell.other-month {
+            color: #ccc;
+        }
+
+        /* Day cell today - Highlight current day */
+        .day-cell.today {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Day cell selected - Border for selected day */
+        .day-cell.selected {
+            border: 2px solid #667eea;
+        }
+
+        /* Day cell has event - Bold text for days with events */
+        .day-cell.has-event {
+            font-weight: bold;
+        }
+
+        /* Day cell empty - No hover effect for empty cells */
+        .day-cell.empty {
+            cursor: default;
+        }
+
+
+        /*
+           ADD EVENT ROW - Event input container
+        */
+        #add-event-row {
+            display: none;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Event input - Text field for new event */
+        #event-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* Dark mode - Event input */
+        body.dark-mode #event-input {
+            background: #2a2a2a;
+            border-color: #333;
+            color: #e0e0e0;
+        }
+
+        /* Add button - Submit event button */
+        #add-btn {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Add button hover */
+        #add-btn:hover {
+            background-color: #764ba2;
+        }
+
+
+
+        /*
+           EVENT DATE LABEL - Selected date display
+        */
+        #event-date-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        /*
+           EVENT LIST - Container for event items
+        */
+        #event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /*
+           EVENT ITEM - Individual event styling
+         */
+        .event-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        /* Dark mode - Event item */
+        body.dark-mode .event-item {
+            background: #2a2a2a;
+        }
+
+        /* Event dot - Colored indicator for event */
+        .event-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Event delete button - Delete event button */
+        .event-item button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        /* Event delete button hover */
+        .event-item button:hover {
+            background-color: #c82333;
+        }
+
+        /* Event empty message - No events message */
+        .event-empty {
+            color: #999;
+        }
+
+        /*
+           MODAL stylesheet
+         */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        body.dark-mode .modal-box {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background: #2a2a2a;
+            border-color: #333;
+            color: #e0e0e0;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .dropdown-group {
+            position: relative;
+        }
+
+        .dropdown-button {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .dropdown-button {
+            background: #2a2a2a;
+            border-color: #333;
+            color: #e0e0e0;
+        }
+
+        .dropdown-button:hover {
+            border-color: #667eea;
+        }
+
+        .dropdown-button::after {
+            content: '▼';
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-button.active::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .dropdown-menu {
+            background: #2a2a2a;
+            border-color: #333;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        body.dark-mode .dropdown-item {
+            border-bottom-color: #333;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        body.dark-mode .dropdown-item:hover {
+            background-color: #333;
+        }
+
+        .dropdown-item.selected {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .modal-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #764ba2;
+        }
+
+        .btn-cancel {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        body.dark-mode .btn-cancel {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        .btn-cancel:hover {
+            background-color: #ccc;
+        }
+
+        body.dark-mode .btn-cancel:hover {
+            background-color: #333;
+        }
+
+        /*
+           HOMEPAGE CONTENT
+        */
+        .content-section {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        body.dark-mode .content-section {
+            background: #1a1a1a;
+        }
+
+        .content-section h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        body.dark-mode .content-section h2 {
+            color: #e0e0e0;
+        }
+
+        .content-section p {
+            color: #999;
+        }
+
+        body.dark-mode .content-section p {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                align-items: center;
+                padding: 10px 20px;
+            }
+
+            .nav-menu,
+            .search-box {
+                display: none;
+            }
+
+            .sidebar-bottom {
+                flex-direction: row;
+                border-top: none;
+                padding-top: 0;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+
+            /*
+           RESPONSIVE - Mobile/tablet adjustments
+            */
+        @media (max-width: 768px) {
+            /* Stack layout vertically on mobile */
+            .container {
+                flex-direction: column;
+            }
+
+            /* Sidebar horizontal on mobile */
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                align-items: center;
+                padding: 10px 20px;
+            }
+
+            /* Hide navigation menu on mobile */
+            .nav-menu,
+            .search-box {
+                display: none;
+            }
+
+            /* Sidebar bottom horizontal on mobile */
+            .sidebar-bottom {
+                flex-direction: row;
+                border-top: none;
+                padding-top: 0;
+            }
+
+            /* Reduce padding on mobile */
+            .tab-content {
+                padding: 20px;
+            }
+
+            /* Banner padding on mobile */
+            .page-banner {
+                padding: 20px;
+            }
+
+            .page-banner h1 {
+                font-size: 22px;
+            }
+        }
+
+        /*
+        SCHEDULE SIDEBAR - Right sidebar for daily tasks
+        */
+        .schedule-sidebar {
+            width: 280px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 40px 40px 0;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Dark mode - Schedule sidebar */
+        body.dark-mode .schedule-sidebar {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+
+        /* Schedule header */
+        .schedule-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .schedule-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        /* Dark mode - Schedule header text */
+        body.dark-mode .schedule-header h3 {
+            color: #e0e0e0;
+        }
+
+        /* Schedule date display */
+        #schedule-date {
+            font-size: 13px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        /* Dark mode - Schedule date */
+        body.dark-mode #schedule-date {
+            color: #666;
+        }
+
+
+
+        /* Schedule item */
+        .schedule-item {
+            background: #f0f0f0;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark mode - Schedule item */
+        body.dark-mode .schedule-item {
+            background: #2a2a2a;
+            border-left-color: #667eea;
+        }
+
+        /* Schedule item hover */
+        .schedule-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        /* Dark mode - Schedule item hover */
+        body.dark-mode .schedule-item:hover {
+            background: #333;
+        }
+
+        /* Schedule item time */
+        .schedule-time {
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        /* Schedule item task */
+        .schedule-task {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        /* Dark mode - Schedule task */
+        body.dark-mode .schedule-task {
+            color: #e0e0e0;
+        }
+
+        /* Schedule empty message */
+        .schedule-empty {
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Dark mode - Schedule empty */
+        body.dark-mode .schedule-empty {
+            color: #666;
+        }
+
+        /* Responsive - Hide sidebar on mobile */
+        @media (max-width: 1024px) {
+            .schedule-sidebar {
+                display: none;
+            }
+        }
+
+
+
+        /*
+        MODERN DAILY TIMELINE
+        */
+
+        .modern-schedule {
+            width: 340px;
+            background: #f5f5f5;
+            border-left: 1px solid #e0e0e0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .modern-schedule {
+            background: #101010;
+            border-color: #222;
+        }
+
+        /* Header */
+        .schedule-header-modern {
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            background: white;
+        }
+
+        body.dark-mode .schedule-header-modern {
+            background: #151515;
+            border-color: #222;
+        }
+
+        .schedule-header-modern h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .schedule-header-modern p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Timeline wrapper */
+        .timeline-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            display: flex;
+            padding-bottom: 100px;
+            scroll-behavior: smooth;
+        }
+
+
+        /* Time labels */
+        .timeline-hours {
+            width: 70px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .hour-label {
+            position: absolute;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* Timeline area */
+        .timeline-content {
+            flex: 1;
+            position: relative;
+            min-height: 1600px;
+            margin-left: 10px;
+        }
+
+        /* Main vertical line */
+        .timeline-line {
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #d0d0d0;
+        }
+
+        body.dark-mode .timeline-line {
+            background: #333;
+        }
+
+        /* Timeline dots */
+        .timeline-dot {
+            position: absolute;
+            left: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #999;
+            z-index: 2;
+        }
+
+        body.dark-mode .timeline-dot {
+            background: #111;
+        }
+
+        /* Event card */
+        .timeline-event {
+            position: absolute;
+            left: 35px;
+            right: 16px;
+            background: white;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        body.dark-mode .timeline-event {
+            background: #1c1c1c;
+            box-shadow: none;
+        }
+
+        .timeline-event:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Event title */
+        .timeline-event-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        body.dark-mode .timeline-event-title {
+            color: #f0f0f0;
+        }
+
+        /* Event details */
+        .timeline-event-detail {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+
+        /* Tips box */
+        .timeline-tip {
+            margin-top: 10px;
+            background: #f3f3f3;
+            border-radius: 10px;
+            padding: 8px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        body.dark-mode .timeline-tip {
+            background: #262626;
+            color: #aaa;
+        }
+
+        /* Floating add button */
+        .floating-add-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 34px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        body.dark-mode .floating-add-btn {
+            background: #222;
+            color: white;
+        }
+
+
+
+        /*
+        FLOATING ADD BUTTON
+        */
+
+        .floating-add-btn {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+
+            width: 65px;
+            height: 65px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: #667eea;
+            color: white;
+
+            font-size: 34px;
+            cursor: pointer;
+
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+            transition: all 0.3s ease;
+
+            z-index: 9999;
+        }
+
+        .floating-add-btn:hover {
+            transform: scale(1.08);
+            background: #764ba2;
+        }

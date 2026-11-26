@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskTales — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #b3b49a;
+      font-family: 'Jost', sans-serif;
+      padding: 2rem;
+    }
+    .auth-wrap {
+      display: flex;
+      width: 100%;
+      max-width: 860px;
+      min-height: 580px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px #1c290d19;
+    }
+    .auth-left {
+      flex: 1.1;
+      background: #676f53;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: -80px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      border: 0.5px solid rgba(210,186,140,0.29);
+    }
+    .auth-left::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      border: 0.5px solid rgba(210,185,140,0.10);
+    }
+    .brand-mark { display: flex; align-items: center; gap: 10px; z-index: 1; }
+    .brand-logo {
+      width: 28px; height: 28px;
+      border: 1px solid rgba(210,185,140,0.6);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand-logo-inner { width: 10px; height: 10px; background: #d2b98c; border-radius: 50%; }
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: 17px;
+      color: #f0e8d8; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .auth-left-copy { z-index: 1; }
+    .auth-left-copy h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 40px;
+      color: #f0e8d8; line-height: 1.2; margin-bottom: 1rem; font-style: italic;
+    }
+    .auth-left-copy p {
+      font-size: 13px; font-weight: 300;
+      color: rgba(210,185,140,0.75); line-height: 1.8; letter-spacing: 0.03em;
+    }
+    .auth-left-footer {
+      font-size: 11px; color: rgba(210,185,140,0.35);
+      letter-spacing: 0.08em; text-transform: uppercase; z-index: 1;
+    }
+    .auth-right {
+      flex: 1; padding: 2.8rem 2.5rem;
+      background: #ffffff;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .tab-row { display: flex; border-bottom: 0.5px solid #e0ddd6; margin-bottom: 2rem; }
+    .tab {
+      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      font-weight: 500; color: #999;
+      padding: 0 0 12px; margin-right: 2rem;
+      cursor: pointer; border-bottom: 1.5px solid transparent;
+      margin-bottom: -0.5px; transition: color 0.2s;
+      background: none; border-left: none; border-right: none; border-top: none;
+    }
+    .tab.active { color: #1a1a18; border-bottom-color: #d2b98c; }
+    .form-section { display: none; }
+    .form-section.visible { display: block; }
+    .field { margin-bottom: 1.2rem; }
+    .field label {
+      display: block; font-size: 11px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #888; margin-bottom: 6px; font-weight: 500;
+    }
+    .field input {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 0.5px solid #ccc; padding: 8px 0;
+      font-family: 'Jost', sans-serif; font-size: 14px;
+      font-weight: 300; color: #1a1a18; outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus { border-bottom-color: #d2b98c; }
+    .field input::placeholder { color: #bbb; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .forgot {
+      font-size: 11px; text-align: right; letter-spacing: 0.06em;
+      color: #888; margin-bottom: 1.8rem; cursor: pointer;
+    }
+    .btn-primary {
+      width: 100%; padding: 13px;
+      background: #0f0e0c; color: #f0e8d8;
+      font-family: 'Jost', sans-serif; font-size: 12px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      border: none; cursor: pointer; border-radius: 8px;
+      font-weight: 400; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.82; }
+    .error-msg { color: #c0392b; font-size: 12px; margin-bottom: 12px; }
+    .terms {
+      font-size: 11px; color: #aaa; margin-top: 1.2rem;
+      text-align: center; line-height: 1.7;
+    }
+    .terms a { color: #888; text-decoration: none; }
+    .terms a:hover { color: #d2b98c; }
+  </style>
+</head>
+<body>
+  <div class="auth-wrap">
+
+    <div class="auth-left">
+      <div class="brand-mark">
+        <div class="brand-logo"><div class="brand-logo-inner"></div></div>
+        <div class="brand-name">TaskTales</div>
+      </div>
+      <div class="auth-left-copy">
+        <h1>Plan. Play.<br>Progress.</h1>
+        <p>Turn your daily study routine<br>into a rewarding system.</p>
+      </div>
+      <div class="auth-left-footer">Est. 2019 &nbsp;&middot;&nbsp; Luxembourg</div>
+    </div>
+
+    <div class="auth-right">
+      <div class="tab-row">
+        <button class="tab active" id="tab-login" onclick="switchTab('login')">Sign in</button>
+        <button class="tab" id="tab-signup" onclick="switchTab('signup')">Create account</button>
+      </div>
+
+      <!-- SIGN IN -->
+      <div class="form-section visible" id="form-login">
+        <form method="POST" action="/login/">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="/calendar/">
+          <div class="field">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="your username" autocomplete="username" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+          {% if form.errors %}
+            <p class="error-msg">Invalid username or password.</p>
+          {% endif %}
+          <div class="forgot">Forgot password?</div>
+          <button class="btn-primary" type="submit">Sign In</button>
+        </form>
+      </div>
+
+      <!-- CREATE ACCOUNT -->
+      <div class="form-section" id="form-signup">
+        <form method="POST" action="/register/">
+          {% csrf_token %}
+          <div class="row2">
+            <div class="field">
+              <label>First name</label>
+              <input name="first_name" type="text" placeholder="Ada" />
+            </div>
+            <div class="field">
+              <label>Last name</label>
+              <input name="last_name" type="text" placeholder="Lovelace" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input name="email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label>Username</label>
+            <input name="username" type="text" placeholder="username" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input name="password" type="password" placeholder="Min. 8 characters" />
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+              <p class="error-msg">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+          <button class="btn-primary" type="submit" style="margin-top:0.4rem;">
+            Create Account
+          </button>
+          <div class="terms">
+            By creating an account you agree to our
+            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.form-section').forEach(f => f.classList.remove('visible'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('form-' + tab).classList.add('visible');
+    }
+    {% if messages %}
+      switchTab('signup');
+    {% endif %}
+  </script>
+</body>
+</html>

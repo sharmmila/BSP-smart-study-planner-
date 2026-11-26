@@ -1,0 +1,1093 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TaskTales</title>
+    <link rel="stylesheet" href="{% static 'planner/css/calendar.css' %}">
+</head>
+<body style="background: #727a77;">
+    <div class="container" style="padding: 5px; gap: 5px;">
+        <!--
+             SIDEBAR SECTION - Left navigation panel
+         -->
+        <aside class="sidebar" id="main-sidebar" style="border-radius: 16px;">
+            <button
+        onclick="toggleSidebar()"
+        id="sidebar-toggle-btn"
+        style="
+            align-self: flex-end;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        ">☰</button>
+            <!-- Logo and user info -->
+            <div class="logo">
+                <div class="logo-icon">👩🏾‍🦲</div>
+                <div>
+                    <div class="logo-text">{{ request.user.username }}</div>
+                    <div class="logo-email">{{ request.user.email }}</div>
+                </div>
+            </div>
+
+            <!-- Navigation menu - Links to different pages/tabs -->
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-tab="homepage">
+    <span class="nav-icon">🏠</span>
+    <span>Homepage</span>
+</a>
+<a href="#" class="nav-item" data-tab="calendar">
+    <span class="nav-icon">📅</span>
+    <span>Calendar</span>
+</a>
+                <a href="#" class="nav-item" data-tab="task-progress">
+                    <span class="nav-icon">✓</span>
+                    <span>Task Progress</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="tbd1">
+                    <span class="nav-icon">📌</span>
+                    <span>TBD</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="tbd2">
+                    <span class="nav-icon">⚙️</span>
+                    <span>TBD</span>
+                </a>
+            </nav>
+
+            <!-- Logout and theme toggle buttons -->
+            <div class="sidebar-bottom">
+                <button class="logout-btn" onclick="window.location.href='startup.html'">
+                    <span style="font-size: 16px;">🚪</span>
+                    <span>Logout</span>
+                </button>
+                <div class="theme-toggle" id="themeToggle">
+                    <span>☀️</span>
+                    <span>Light mode</span>
+                    <div class="toggle-switch">
+                        <div class="toggle-circle"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!--
+             MAIN CONTENT - Right side content area
+         -->
+        <main class="main-content" style="border-radius: 16px; overflow: hidden;">
+            <!-- HOMEPAGE TAB - Default page shown on load -->
+            <div id="homepage" class="tab-content active">
+                <!-- Banner header -->
+                <div class="page-banner">
+                    <h1>Welcome to TaskTales</h1>
+                    <p>Manage your tasks and organize your day efficiently</p>
+                </div>
+                <!-- Content -->
+                <div class="content-section">
+                    <h2>Welcome to TaskTales Homepage</h2>
+                    <p>Select an option from the sidebar to get started</p>
+                </div>
+            </div>
+
+            <!-- CALENDAR TAB - Calendar page -->
+            <div id="calendar" class="tab-content">
+                <div style="display: flex; flex-direction: column; height: 100%;">
+
+                    <!-- Banner at top, full width -->
+                    <div class="page-banner">
+                        <h1>Calendar</h1>
+                        <p>Plan your schedule and track important dates</p>
+                    </div>
+
+                    <!-- View Toggle -->
+                    <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px 0;">
+                        <div id="view-toggle" style="
+                            display: flex;
+                            background: #ede9f6;
+                            border-radius: 12px;
+                            padding: 4px;
+                            gap: 4px;
+                        ">
+                            <button id="btn-monthly" onclick="switchView('monthly')" style="
+                                padding: 6px 20px;
+                                border-radius: 9px;
+                                border: none;
+                                cursor: pointer;
+                                font-size: 13px;
+                                font-weight: 600;
+                                background: #7c5cbf;
+                                color: white;
+                                transition: all 0.2s;
+                            ">Monthly</button>
+                            <button id="btn-weekly" onclick="switchView('weekly')" style="
+                                padding: 6px 20px;
+                                border-radius: 9px;
+                                border: none;
+                                cursor: pointer;
+                                font-size: 13px;
+                                font-weight: 600;
+                                background: transparent;
+                                color: #7c5cbf;
+                                transition: all 0.2s;
+                            ">Weekly</button>
+                        </div>
+                    </div>
+
+                    <!-- Calendar + Schedule side by side below banner -->
+                    <div style="display: flex; gap: 0px; flex: 1; min-height: 0;">
+
+                        <!-- Left side - Calendar -->
+                        <div style="flex: 1; padding: 16px; overflow: auto;">
+                            <div style="background: white; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 20px; min-height: 100%; box-sizing: border-box;">
+
+                                <!-- Calendar header with navigation buttons -->
+                                <div class="calendar-header">
+                                    <button id="prev">← Prev</button>
+                                    <h2 id="month-label"></h2>
+                                    <button id="next">Next →</button>
+                                    <button id="today-btn">Today</button>
+                                    <!-- Month/Year picker dropdown -->
+                                    <div style="position:relative; display:inline-block;">
+                                        <button id="month-picker-btn" onclick="toggleMonthPicker()" style="
+                                            padding: 6px 12px;
+                                            border-radius: 8px;
+                                            border: 1px solid #ddd;
+                                            background: white;
+                                            cursor: pointer;
+                                            font-size: 13px;
+                                            color: #555;
+                                        ">📅 Jump to…</button>
+                                        <div id="month-picker-dropdown" style="
+                                            display: none;
+                                            position: absolute;
+                                            top: calc(100% + 6px);
+                                            left: 0;
+                                            background: white;
+                                            border: 1px solid #ddd;
+                                            border-radius: 12px;
+                                            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+                                            padding: 12px;
+                                            z-index: 200;
+                                            min-width: 220px;
+                                        ">
+                                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                                                <button onclick="pickerChangeYear(-1)" style="border:none;background:transparent;cursor:pointer;font-size:16px;color:#555;">‹</button>
+                                                <span id="picker-year-label" style="flex:1;text-align:center;font-weight:600;font-size:14px;"></span>
+                                                <button onclick="pickerChangeYear(1)" style="border:none;background:transparent;cursor:pointer;font-size:16px;color:#555;">›</button>
+                                            </div>
+                                            <div id="picker-month-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- MONTHLY VIEW -->
+                                <div id="monthly-view">
+                                    <div class="weekdays">
+                                        <div>Sun</div><div>Mon</div><div>Tue</div>
+                                        <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                                    </div>
+                                    <div id="cal-grid"></div>
+                                </div>
+
+                                <!-- WEEKLY VIEW -->
+                                <div id="weekly-view" style="display:none; overflow-x: auto;">
+                                    <div id="week-grid"></div>
+                                </div>
+
+                                <div id="add-event-row">
+                                    <input type="text" id="event-input" placeholder="Add event...">
+                                    <button id="add-btn">Add</button>
+                                </div>
+                                <div id="event-date-label">Select a day</div>
+                                <div id="event-list"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right side - Daily Schedule Sidebar -->
+                        <div id="schedule-sidebar" class="schedule-sidebar modern-schedule">
+                            <div class="schedule-header-modern">
+                                <h2>Daily Schedule</h2>
+                                <div id="schedule-date">Today's Tasks</div>
+                            </div>
+                            <div class="timeline-wrapper" id="timeline-wrapper" style="margin-top: 16px; padding-top: 10px;">
+                                <div class="timeline-hours" id="timeline-hours"></div>
+                                <div class="timeline-content" id="timeline-content">
+                                    <div class="timeline-line"></div>
+                                </div>
+                                <div id="schedule-list" class="schedule-list"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL FOR ADDING EVENTS -->
+            <div id="event-modal" class="modal-overlay">
+                <div class="modal-box">
+                    <div class="modal-header" id="modal-title">Add Event</div>
+                    <form class="modal-form" id="event-form">
+                        <div class="form-group">
+                            <label for="event-title">Title</label>
+                            <input type="text" id="event-title" placeholder="Enter event title..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-comments">Comments</label>
+                            <textarea id="event-comments" placeholder="Add any additional details or notes..."></textarea>
+                        </div>
+        <!--Time Inputs-->
+        <div class="form-group">
+    <label>Time Range</label>
+
+    <!-- Text inputs for precise time entry -->
+    <div style="display:flex; gap:12px; margin-bottom:12px;">
+        <div style="flex:1;">
+            <div style="font-size:11px; color:#888; margin-bottom:4px; letter-spacing:0.04em;">Start</div>
+            <input
+                type="text"
+                id="time-text-start"
+                value="00:00"
+                maxlength="5"
+                placeholder="00:00"
+                style="
+                    width:100%;
+                    padding:7px 10px;
+                    border:1px solid #ddd;
+                    border-radius:8px;
+                    font-size:14px;
+                    font-family:inherit;
+                    text-align:center;
+                    letter-spacing:0.08em;
+                    outline:none;
+                    transition:border-color 0.2s;
+                "
+                onfocus="this.style.borderColor='#667eea'"
+                onblur="this.style.borderColor='#ddd'; commitTimeText('start')"
+            >
+        </div>
+        <div style="display:flex; align-items:flex-end; padding-bottom:8px; color:#aaa; font-size:18px;">→</div>
+        <div style="flex:1;">
+            <div style="font-size:11px; color:#888; margin-bottom:4px; letter-spacing:0.04em;">End</div>
+            <input
+                type="text"
+                id="time-text-end"
+                value="23:59"
+                maxlength="5"
+                placeholder="23:59"
+                style="
+                    width:100%;
+                    padding:7px 10px;
+                    border:1px solid #ddd;
+                    border-radius:8px;
+                    font-size:14px;
+                    font-family:inherit;
+                    text-align:center;
+                    letter-spacing:0.08em;
+                    outline:none;
+                    transition:border-color 0.2s;
+                "
+                onfocus="this.style.borderColor='#667eea'"
+                onblur="this.style.borderColor='#ddd'; commitTimeText('end')"
+            >
+        </div>
+    </div>
+
+    <!-- Dual-handle range slider -->
+    <div id="dual-slider-wrap" style="position:relative; height:28px; margin: 4px 0 4px;">
+        <!-- Track background -->
+        <div style="position:absolute; top:50%; left:0; right:0; height:6px; background:#e0e0e0; border-radius:3px; transform:translateY(-50%);"></div>
+        <!-- Colored fill between handles -->
+        <div id="time-range-fill" style="position:absolute; top:50%; height:6px; background:#667eea; border-radius:3px; transform:translateY(-50%); pointer-events:none;"></div>
+        <!-- Hidden range inputs stacked on top of each other -->
+        <input type="range" id="event-time-start" min="0" max="1439" value="0"
+            style="position:absolute; width:100%; top:50%; transform:translateY(-50%); pointer-events:none; opacity:0; height:28px;">
+        <input type="range" id="event-time-end" min="0" max="1439" value="1439"
+            style="position:absolute; width:100%; top:50%; transform:translateY(-50%); pointer-events:none; opacity:0; height:28px;">
+        <!-- Custom visible thumbs -->
+        <div id="thumb-start" style="
+            position:absolute; top:50%; width:18px; height:18px;
+            background:white; border:2px solid #667eea; border-radius:50%;
+            transform:translate(-50%,-50%); cursor:grab; box-shadow:0 1px 4px rgba(0,0,0,0.18);
+            z-index:3;
+        "></div>
+        <div id="thumb-end" style="
+            position:absolute; top:50%; width:18px; height:18px;
+            background:white; border:2px solid #667eea; border-radius:50%;
+            transform:translate(-50%,-50%); cursor:grab; box-shadow:0 1px 4px rgba(0,0,0,0.18);
+            z-index:3;
+        "></div>
+    </div>
+    <!-- Min/max labels -->
+    <div style="display:flex; justify-content:space-between; font-size:11px; color:#aaa; margin-top:2px;">
+        <span>00:00</span><span>23:59</span>
+    </div>
+</div>
+                        <!-- Dropdowns for difficulty and priority -->
+                        <!-- Dropdown for difficulty -->
+                        <div class="form-row">
+                            <div class="dropdown-group">
+                                <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500;">Difficulty</label>
+                                <button type="button" class="dropdown-button" id="difficulty-btn" data-type="difficulty">
+                                    <span id="difficulty-value">Select...</span>
+                                </button>
+                                <div class="dropdown-menu" id="difficulty-menu">
+                                    <div class="dropdown-item" data-value="easy">Easy</div>
+                                    <div class="dropdown-item" data-value="medium">Medium</div>
+                                    <div class="dropdown-item" data-value="hard">Hard</div>
+                                </div>
+                            </div>
+                            <!-- Label for the priority dropdown -->
+                            <div class="dropdown-group">
+                                <label style="display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500;">Priority</label>
+                                <button type="button" class="dropdown-button" id="priority-btn" data-type="priority">
+                                    <span id="priority-value">Select...</span>
+                                </button>
+                                <div class="dropdown-menu" id="priority-menu">
+                                    <div class="dropdown-item" data-value="low">Low</div>
+                                    <div class="dropdown-item" data-value="mid">Mid</div>
+                                    <div class="dropdown-item" data-value="high">High</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="button" class="btn-cancel" id="modal-cancel">Cancel</button>
+                            <button type="submit" class="btn-save">Save Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+         <!-- TASK PROGRESS TAB -->
+<div id="task-progress" class="tab-content">
+    <div class="page-banner">
+        <h1>Task Progress</h1>
+        <p>Track your tasks and monitor your productivity</p>
+    </div>
+    <div class="content-section" style="padding: 20px;">
+        {% if tasks %}
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                {% for task in tasks %}
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 16px 20px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                ">
+                    <!-- Colored dot based on priority -->
+                    <div style="
+                        width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+                        background: {% if task.priority == 'high' %}#e74c3c{% elif task.priority == 'medium' %}#f39c12{% else %}#2ecc71{% endif %};
+                    "></div>
+
+                    <!-- Task info -->
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 15px; color: #1a1a18;">{{ task.title }}</div>
+                        {% if task.description %}
+                            <div style="font-size: 13px; color: #888; margin-top: 2px;">{{ task.description }}</div>
+                        {% endif %}
+                        <div style="font-size: 12px; color: #aaa; margin-top: 4px;">
+                            Deadline: {{ task.deadline|date:"d M Y, H:i" }}
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                        <span style="
+                            padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+                            background: {% if task.difficulty == 'hard' %}#fde8e8{% elif task.difficulty == 'medium' %}#fef3e2{% else %}#e8f8f0{% endif %};
+                            color: {% if task.difficulty == 'hard' %}#e74c3c{% elif task.difficulty == 'medium' %}#f39c12{% else %}#2ecc71{% endif %};
+                        ">{{ task.get_difficulty_display }}</span>
+                        <span style="
+                            padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+                            background: {% if task.priority == 'high' %}#fde8e8{% elif task.priority == 'medium' %}#fef3e2{% else %}#e8f8f0{% endif %};
+                            color: {% if task.priority == 'high' %}#e74c3c{% elif task.priority == 'medium' %}#f39c12{% else %}#2ecc71{% endif %};
+                        ">{{ task.get_priority_display }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #aaa; text-align: center; margin-top: 40px;">No tasks yet — add one from the Calendar!</p>
+        {% endif %}
+    </div>
+</div>
+
+            <!-- TBD 1 TAB - Placeholder tab -->
+            <div id="tbd1" class="tab-content">
+                <!-- Banner header -->
+                <div class="page-banner">
+                    <h1>TBD 1</h1>
+                    <p>This feature is coming soon</p>
+                </div>
+                <!-- Content -->
+                <div class="content-section">
+                    <h2>TBD 1</h2>
+                    <p>Coming soon...</p>
+                </div>
+            </div>
+
+            <!-- TBD 2 TAB - Placeholder tab -->
+            <div id="tbd2" class="tab-content">
+                <!-- Banner header -->
+                <div class="page-banner">
+                    <h1>TBD 2</h1>
+                    <p>This feature is coming soon</p>
+                </div>
+                <!-- Content -->
+                <div class="content-section">
+                    <h2>TBD 2</h2>
+                    <p>Coming soon...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!--
+         JAVASCRIPT - Interactive functionality
+     -->
+    <script>
+        /*
+           TAB SWITCHING - Navigate between different pages
+         */
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Get the tab name from data-tab attribute
+                const tabName = item.getAttribute('data-tab');
+
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Show selected tab
+                const selectedTab = document.getElementById(tabName);
+                if (selectedTab) {
+                    selectedTab.classList.add('active');
+                }
+
+                // Remove active class from all nav items
+                navItems.forEach(i => i.classList.remove('active'));
+
+                // Add active class to clicked item
+                item.classList.add('active');
+            });
+        });
+
+        /*
+           THEME TOGGLE - Light/Dark mode functionality
+        */
+        const themeToggle = document.getElementById('themeToggle');
+        const toggleSwitch = themeToggle.querySelector('.toggle-switch');
+        const themeLabel = themeToggle.querySelector('span:nth-child(2)');
+
+        // Load saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            toggleSwitch.classList.add('active');
+            themeLabel.textContent = 'Dark mode';
+        }
+
+        // Handle theme toggle click
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            toggleSwitch.classList.toggle('active');
+
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            themeLabel.textContent = isDarkMode ? 'Dark mode' : 'Light mode';
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        });
+
+    // SIDEBAR TOGGLE function: Opens and closes the left navigation sidebar
+
+    function toggleSidebar() {
+    const sidebar = document.getElementById('main-sidebar');
+    const isCollapsed = sidebar.classList.contains('collapsed');
+
+    if (isCollapsed) {
+        sidebar.classList.remove('collapsed');
+        sidebar.style.width = '280px';
+        document.querySelectorAll('.nav-item span:last-child, .logo-text, .logo-email, .logout-btn span:last-child').forEach(el => {
+        el.style.display = '';
+        });
+    } else {
+        sidebar.classList.add('collapsed');
+        sidebar.style.width = '60px';
+        document.querySelectorAll('.nav-item span:last-child, .logo-text, .logo-email, .search-box, .logout-btn span:last-child').forEach(el => {
+        el.style.display = 'none';
+        });
+    }
+    }
+    </script>
+
+
+
+
+<script>
+
+/*
+   TIMELINE SIZE / ZOOM SETTINGS
+*/
+
+const timelineWrapper = document.getElementById('timeline-wrapper');
+const timelineHours = document.getElementById('timeline-hours');
+const timelineContent = document.getElementById('timeline-content');
+
+/* Height per hour */
+let hourHeight = 120;
+
+/*
+   GENERATE TIMELINE
+ */
+
+function generateTimeline() {
+
+    timelineHours.innerHTML = '';
+    timelineContent.innerHTML = '<div class="timeline-line"></div>';
+
+    for (let hour = 0; hour < 24; hour++) {
+
+        const y = hour * hourHeight;
+
+        /* Hour labels */
+        const label = document.createElement('div');
+        label.className = 'hour-label';
+
+        const formatted =
+        hour < 10 ? `0${hour}` : `${hour}`;
+
+        label.textContent = `${formatted}:00`;
+        label.style.top = `${y}px`;
+
+        timelineHours.appendChild(label);
+    }
+
+    timelineContent.style.minHeight = `${24 * hourHeight}px`;
+
+    renderEvents();
+}
+
+
+/*
+   MONTH PICKER DROPDOWN
+ */
+
+const MONTH_NAMES_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let pickerYear = new Date().getFullYear();
+
+function toggleMonthPicker() {
+    const dd = document.getElementById('month-picker-dropdown');
+    const isOpen = dd.style.display !== 'none';
+    if (isOpen) {
+        dd.style.display = 'none';
+    } else {
+        pickerYear = viewYear; // sync to current view year
+        buildMonthPickerGrid();
+        dd.style.display = 'block';
+    }
+}
+
+function pickerChangeYear(delta) {
+    pickerYear += delta;
+    buildMonthPickerGrid();
+}
+
+function buildMonthPickerGrid() {
+    document.getElementById('picker-year-label').textContent = pickerYear;
+    const grid = document.getElementById('picker-month-grid');
+    grid.innerHTML = '';
+    MONTH_NAMES_SHORT.forEach((name, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = name;
+        const isActive = (i === viewMonth && pickerYear === viewYear);
+        btn.style.cssText = `
+            padding: 7px 4px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            background: ${isActive ? '#7c5cbf' : '#f0ecfa'};
+            color: ${isActive ? 'white' : '#555'};
+            transition: background 0.15s;
+        `;
+        btn.addEventListener('mouseenter', () => { if (!isActive) btn.style.background = '#ddd5f7'; });
+        btn.addEventListener('mouseleave', () => { if (!isActive) btn.style.background = '#f0ecfa'; });
+        btn.addEventListener('click', () => {
+            viewYear = pickerYear;
+            viewMonth = i;
+            // Also update weekStartDate to the first Sunday of or before the 1st of that month
+            const firstOfMonth = new Date(viewYear, viewMonth, 1);
+            weekStartDate = new Date(firstOfMonth);
+            weekStartDate.setDate(weekStartDate.getDate() - weekStartDate.getDay());
+            document.getElementById('month-picker-dropdown').style.display = 'none';
+            if (typeof currentView !== 'undefined' && currentView === 'weekly') {
+                renderWeekly();
+            } else {
+                render();
+            }
+        });
+        grid.appendChild(btn);
+    });
+}
+
+// Close picker when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#month-picker-btn') && !e.target.closest('#month-picker-dropdown')) {
+        const dd = document.getElementById('month-picker-dropdown');
+        if (dd) dd.style.display = 'none';
+    }
+});
+
+
+let currentView = 'monthly';
+
+function switchView(view) {
+    currentView = view;
+
+    const monthly = document.getElementById('monthly-view');
+    const weekly  = document.getElementById('weekly-view');
+    const btnM    = document.getElementById('btn-monthly');
+    const btnW    = document.getElementById('btn-weekly');
+
+    if (view === 'monthly') {
+        monthly.style.display = '';
+        weekly.style.display  = 'none';
+        btnM.style.background = '#7c5cbf';
+        btnM.style.color      = 'white';
+        btnW.style.background = 'transparent';
+        btnW.style.color      = '#7c5cbf';
+        render();
+    } else {
+        monthly.style.display = 'none';
+        weekly.style.display  = '';
+        btnW.style.background = '#7c5cbf';
+        btnW.style.color      = 'white';
+        btnM.style.background = 'transparent';
+        btnM.style.color      = '#7c5cbf';
+        renderWeekly();
+    }
+}
+
+/*
+   WEEKLY VIEW RENDERER
+ */
+
+const EVENT_COLORS_WEEKLY = [
+    '#b39ddb','#9575cd','#7c5cbf','#ce93d8',
+    '#d4b0f0','#a78bca','#8b6abf','#c9a8e8'
+];
+
+function renderWeekly() {
+    const grid = document.getElementById('week-grid');
+    grid.innerHTML = '';
+
+    /* Use the persistent weekStartDate; if a date is selected jump to its week */
+    if (selectedDate) {
+        const sel = new Date(selectedDate.y, selectedDate.m, selectedDate.d);
+        const sunday = new Date(sel);
+        sunday.setDate(sunday.getDate() - sunday.getDay());
+        // Only jump if different from current weekStartDate
+        if (sunday.toDateString() !== weekStartDate.toDateString()) {
+            weekStartDate = sunday;
+        }
+    }
+
+    /* Build 7 day columns */
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(weekStartDate);
+        d.setDate(d.getDate() + i);
+        days.push(d);
+    }
+
+    /* Update the month label to show the week range */
+    const lastDay = days[6];
+    const firstDay0 = days[0];
+    const opts = { month: 'short', day: 'numeric' };
+    const rangeLabel = firstDay0.toLocaleDateString('en-US', opts) + ' – ' +
+                       lastDay.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('month-label').textContent = rangeLabel;
+
+    const hours = 24;
+    const hourH = 48; /* px per hour in weekly view */
+
+    /* Helper: parse stored "HH:MM" string → decimal hours */
+    function parseTimeToHours(t) {
+        if (t === undefined || t === null) return null;
+        if (typeof t === 'number') return t;
+        const parts = String(t).split(':');
+        if (parts.length === 2) {
+            return parseInt(parts[0], 10) + parseInt(parts[1], 10) / 60;
+        }
+        return parseFloat(t) || null;
+    }
+
+    /* Wrapper */
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = `
+        display: flex;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #ede9f6;
+        font-size: 12px;
+    `;
+
+    /* Time column */
+    const timeCol = document.createElement('div');
+    timeCol.style.cssText = `
+        width: 48px;
+        flex-shrink: 0;
+        border-right: 1px solid #ede9f6;
+    `;
+
+    /* Time column header spacer */
+    const timeHeader = document.createElement('div');
+    timeHeader.style.cssText = `height: 40px; border-bottom: 1px solid #ede9f6;`;
+    timeCol.appendChild(timeHeader);
+
+    for (let h = 0; h < hours; h++) {
+        const slot = document.createElement('div');
+        slot.style.cssText = `
+            height: ${hourH}px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 4px;
+            color: #999;
+            font-size: 11px;
+            border-bottom: 1px solid #f5f0ff;
+        `;
+        slot.textContent = `${String(h).padStart(2,'0')}:00`;
+        timeCol.appendChild(slot);
+    }
+    wrapper.appendChild(timeCol);
+
+    /* Day columns */
+    days.forEach(day => {
+        const key = dateKey(day.getFullYear(), day.getMonth(), day.getDate());
+        const isToday = day.toDateString() === new Date().toDateString();
+
+        const col = document.createElement('div');
+        col.style.cssText = `
+            flex: 1;
+            border-right: 1px solid #ede9f6;
+            position: relative;
+            min-width: 80px;
+        `;
+
+        /* Day header */
+        const header = document.createElement('div');
+        header.style.cssText = `
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #ede9f6;
+            background: ${isToday ? '#7c5cbf' : '#faf8ff'};
+            color: ${isToday ? 'white' : '#555'};
+            font-weight: 600;
+            cursor: pointer;
+            gap: 1px;
+        `;
+        const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        header.innerHTML = `
+            <span style="font-size:10px;">${dayNames[day.getDay()]}</span>
+            <span style="font-size:14px;">${day.getDate()}</span>
+        `;
+        header.addEventListener('click', () => {
+            selectDay(day.getFullYear(), day.getMonth(), day.getDate(), key);
+        });
+        col.appendChild(header);
+
+        /* Hour slots background */
+        for (let h = 0; h < hours; h++) {
+            const slot = document.createElement('div');
+            slot.style.cssText = `
+                height: ${hourH}px;
+                border-bottom: 1px solid #f5f0ff;
+                box-sizing: border-box;
+            `;
+            col.appendChild(slot);
+        }
+
+        /* Render events for this day */
+        const dayEvents = events[key] || [];
+        dayEvents.forEach((ev, i) => {
+            const color = EVENT_COLORS_WEEKLY[i % EVENT_COLORS_WEEKLY.length];
+            const startH = parseTimeToHours(ev.timeStart) !== null ? parseTimeToHours(ev.timeStart) : 9;
+            const endH   = parseTimeToHours(ev.timeEnd)   !== null ? parseTimeToHours(ev.timeEnd)   : Math.min(startH + 1, 24);
+            const top    = 40 + startH * hourH;
+            const height = Math.max((endH - startH) * hourH - 4, 20);
+
+            const block = document.createElement('div');
+            block.style.cssText = `
+                position: absolute;
+                top: ${top}px;
+                left: 2px;
+                right: 2px;
+                height: ${height}px;
+                background: ${color};
+                border-radius: 6px;
+                padding: 3px 5px;
+                font-size: 11px;
+                color: white;
+                font-weight: 500;
+                overflow: hidden;
+                cursor: pointer;
+                z-index: 1;
+            `;
+            block.textContent = ev.title || 'Event';
+
+            /* Click to select the day and show event details */
+            block.addEventListener('click', () => {
+                selectedDate = { y: day.getFullYear(), m: day.getMonth(), d: day.getDate(), key };
+                render();
+            });
+
+            col.appendChild(block);
+        });
+
+        wrapper.appendChild(col);
+    });
+
+    grid.appendChild(wrapper);
+}
+
+/*
+   EVENT RENDERING
+ */
+
+const scheduleEvents = [];
+
+
+function renderEvents() {
+
+    const oldEvents = document.querySelectorAll('.timeline-event, .timeline-dot');
+    oldEvents.forEach(e => e.remove());
+
+    scheduleEvents.forEach(event => {
+
+        const top = event.start * hourHeight;
+        const height = event.duration * hourHeight;
+
+        /* Timeline dot */
+        const dot = document.createElement('div');
+        dot.className = 'timeline-dot';
+        dot.style.top = `${top}px`;
+
+        /* Event card */
+        const card = document.createElement('div');
+        card.className = 'timeline-event';
+
+        card.style.top = `${top - 10}px`;
+        card.style.height = `${height - 16}px`;
+
+        card.innerHTML = `
+            <div class="timeline-event-title">${event.title}</div>
+
+            <div class="timeline-event-detail">
+                📍 ${event.location}
+            </div>
+
+            <div class="timeline-event-detail">
+                ⏰ ${event.duration} hours
+            </div>
+
+            <div class="timeline-tip">
+                Tips: ${event.notes}
+            </div>
+        `;
+
+        timelineContent.appendChild(dot);
+        timelineContent.appendChild(card);
+    });
+}
+
+
+
+/*
+   SCROLL TO ZOOM / ELONGATE
+ */
+
+timelineWrapper.addEventListener('wheel', (e) => {
+
+    if (e.ctrlKey) {
+
+        e.preventDefault();
+
+        if (e.deltaY < 0) {
+            hourHeight += 10;
+        } else {
+            hourHeight -= 10;
+        }
+
+        hourHeight = Math.max(60, Math.min(hourHeight, 240));
+
+        generateTimeline();
+    }
+
+}, { passive: false });
+
+/* Initial render */
+generateTimeline();
+
+</script>
+
+
+<!--Slider script: dual-handle with minute precision + text field sync-->
+<script>
+(function() {
+  const MAX_MINS = 1439; // 23*60+59
+
+  // ── helpers
+  function minsToStr(m) {
+    return String(Math.floor(m / 60)).padStart(2,'0') + ':' + String(m % 60).padStart(2,'0');
+  }
+
+  function strToMins(s) {
+    const parts = s.split(':');
+    if (parts.length !== 2) return null;
+    const h = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) return null;
+    return h * 60 + m;
+  }
+
+  // ── state
+  let startMins = 0;
+  let endMins   = MAX_MINS;
+
+  // ── DOM refs
+  const wrap        = document.getElementById('dual-slider-wrap');
+  const thumbStart  = document.getElementById('thumb-start');
+  const thumbEnd    = document.getElementById('thumb-end');
+  const fill        = document.getElementById('time-range-fill');
+  const inputStart  = document.getElementById('event-time-start'); // hidden range
+  const inputEnd    = document.getElementById('event-time-end');
+  const textStart   = document.getElementById('time-text-start');
+  const textEnd     = document.getElementById('time-text-end');
+
+  // ── update visuals from state
+  function updateUI() {
+    const pctS = startMins / MAX_MINS * 100;
+    const pctE = endMins   / MAX_MINS * 100;
+
+    thumbStart.style.left = pctS + '%';
+    thumbEnd.style.left   = pctE + '%';
+    fill.style.left  = pctS + '%';
+    fill.style.width = (pctE - pctS) + '%';
+
+    // sync text fields
+    textStart.value = minsToStr(startMins);
+    textEnd.value   = minsToStr(endMins);
+
+    // keep hidden range inputs updated (used by saveEventFromModal)
+    inputStart.value = startMins;
+    inputEnd.value   = endMins;
+  }
+
+  // ── drag logic
+  function makeDraggable(thumb, which) {
+    thumb.addEventListener('mousedown', startDrag);
+    thumb.addEventListener('touchstart', startDrag, { passive: true });
+
+    function startDrag(e) {
+      e.preventDefault && e.preventDefault();
+      thumb.style.cursor = 'grabbing';
+
+      const onMove = (ev) => {
+        const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+        const rect = wrap.getBoundingClientRect();
+        let pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        let mins = Math.round(pct * MAX_MINS);
+
+        if (which === 'start') {
+          startMins = Math.min(mins, endMins - 1);
+        } else {
+          endMins = Math.max(mins, startMins + 1);
+        }
+        updateUI();
+      };
+
+      const onUp = () => {
+        thumb.style.cursor = 'grab';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend', onUp);
+      };
+
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      document.addEventListener('touchmove', onMove);
+      document.addEventListener('touchend', onUp);
+    }
+  }
+
+  makeDraggable(thumbStart, 'start');
+  makeDraggable(thumbEnd,   'end');
+
+  // ── text field → state
+  window.commitTimeText = function(which) {
+    if (which === 'start') {
+      const val = strToMins(textStart.value);
+      if (val !== null) {
+        startMins = Math.min(val, endMins - 1);
+      }
+    } else {
+      const val = strToMins(textEnd.value);
+      if (val !== null) {
+        endMins = Math.max(val, startMins + 1);
+      }
+    }
+    updateUI();
+  };
+
+  // Live formatting: auto-insert colon after 2 digits
+  function liveFormat(input) {
+    input.addEventListener('input', () => {
+      let v = input.value.replace(/[^0-9]/g,'');
+      if (v.length > 2) v = v.slice(0,2) + ':' + v.slice(2,4);
+      input.value = v;
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); commitTimeText(input === textStart ? 'start' : 'end'); }
+    });
+  }
+
+  liveFormat(textStart);
+  liveFormat(textEnd);
+
+  // ── expose a reset function for modal open
+  window.updateTimeSlider = function() {
+    startMins = 0;
+    endMins   = MAX_MINS;
+    updateUI();
+  };
+
+  // ── initial render
+  updateUI();
+})();
+</script>
+
+
+    <script id="django-tasks" type="application/json">{{ tasks_json|safe }}</script>
+    <script src="{% static 'planner/js/calendar.js' %}"></script>
+    <script src="{% static 'planner/js/modal.js' %}"></script>
+
+    <button class="floating-add-btn" onclick="openEventModal()">+</button>
+</body>
+</html>
