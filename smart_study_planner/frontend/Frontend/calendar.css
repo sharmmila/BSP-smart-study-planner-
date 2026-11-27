@@ -1,0 +1,195 @@
+/* ============================================
+   CALENDAR HEADER - Month/year label and nav buttons
+   ============================================ */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+#month-label {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.calendar-header button {
+    background-color: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.calendar-header button:hover {
+    background-color: #764ba2;
+}
+
+/* ============================================
+   WEEKDAYS - Day of week labels (Sun–Sat)
+   ============================================ */
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* ============================================
+   CALENDAR GRID - Days grid layout
+   ============================================ */
+#cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+/* ============================================
+   DAY CELL - Individual day cell
+   ============================================ */
+.day-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.day-cell:hover {
+    background-color: #e9ecef;
+}
+
+.day-cell.other-month {
+    color: #ccc;
+}
+
+.day-cell.today {
+    background-color: #667eea;
+    color: white;
+    font-weight: bold;
+}
+
+.day-cell.selected {
+    border: 2px solid #667eea;
+}
+
+.day-cell.has-event {
+    font-weight: bold;
+}
+
+.day-cell.empty {
+    cursor: default;
+}
+
+/* ============================================
+   ADD EVENT ROW - Event input field + button
+   ============================================ */
+#add-event-row {
+    display: none;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#event-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+body.dark-mode #event-input {
+    background: #2a2a2a;
+    border-color: #333;
+    color: #e0e0e0;
+}
+
+#add-btn {
+    background-color: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#add-btn:hover {
+    background-color: #764ba2;
+}
+
+/* ============================================
+   EVENT DATE LABEL - Selected date display
+   ============================================ */
+#event-date-label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* ============================================
+   EVENT LIST - Container for event items
+   ============================================ */
+#event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.event-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 8px;
+}
+
+body.dark-mode .event-item {
+    background: #2a2a2a;
+}
+
+.event-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.event-item button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.event-item button:hover {
+    background-color: #c82333;
+}
+
+.event-empty {
+    color: #999;
+}
+
+/* ============================================
+   RESPONSIVE - Hide schedule sidebar on tablet
+   ============================================ */
+@media (max-width: 1024px) {
+    .schedule-sidebar {
+        display: none;
+    }
+}
